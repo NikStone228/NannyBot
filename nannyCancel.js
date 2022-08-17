@@ -38,14 +38,25 @@ dateStep.on('text', async (ctx) => {
     }
 })
 
+const numberStep = new Composer();
+numberStep.on('text', async (ctx) => {
+    try {
+        ctx.wizard.state.data.dateInfo = ctx.message.text;
+        await ctx.replyWithHTML("<b>Введите свой номер телефона</b>")
+        return ctx.wizard.next();
+    }catch(e){
+        console.log(e);
+    }
+})
+
 const finalStep = new Composer();
 finalStep.on('text', async (ctx) => {
     try {
-        ctx.wizard.state.data.dateInfo = ctx.message.text;
+        ctx.wizard.state.data.numberInfo = ctx.message.text;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`<b>Ваше обращение:\nТема: <i>${wizardData.title}</i>\nИмя и фамилия ребенка: <i>${wizardData.childInfo}</i>\nИмя и фамилия няни: <i>${wizardData.nannyInfo}</i>\nДата и время визита: <i>${wizardData.dateInfo}</i></b>`)
+        await ctx.replyWithHTML(`<b>Ваше обращение:\nТема: <i>${wizardData.title}</i>\nИмя и фамилия ребенка: <i>${wizardData.childInfo}</i>\nИмя и фамилия няни: <i>${wizardData.nannyInfo}</i>\nДата и время визита: <i>${wizardData.dateInfo}</i>\nВаш номер телефона: <i>${wizardData.numberInfo}</i></b>`)
         await ctx.replyWithHTML("<b>Спасибо! Ваша заявка была успешно отправлена и будет обработана в ближайшее время!</b>")
-        await ctx.telegram.sendMessage(process.env.CHAT_ID, `Новая заявка!\nТема: ${wizardData.title}\nИмя и фамилия ребенка: ${wizardData.childInfo}\nИмя и фамилия няни: ${wizardData.nannyInfo}\nДата и время визита: ${wizardData.dateInfo}\nИмя отправителя: ${wizardData.firstName} ${wizardData.lastName}\nИмя пользователя отправителя: ${wizardData.username}`)
+        await ctx.telegram.sendMessage(process.env.CHAT_ID, `Новая заявка!\nТема: ${wizardData.title}\nИмя и фамилия ребенка: ${wizardData.childInfo}\nИмя и фамилия няни: ${wizardData.nannyInfo}\nДата и время визита: ${wizardData.dateInfo}\nНомер телефона: ${wizardData.numberInfo}\nИмя отправителя: ${wizardData.firstName} ${wizardData.lastName ? wizardData.lastName : "Фамилия не указана"}\nИмя пользователя отправителя: ${wizardData.username ? wizardData.username : "Имя пользователя скрыто"}`)
         return ctx.scene.leave();
     }catch(e){
         console.log(e);
@@ -53,5 +64,5 @@ finalStep.on('text', async (ctx) => {
 })
 
 
-const nannyCancellationScene = new Scenes.WizardScene('nannyCancellationWizzard', startStep, nannyInfoStep, dateStep, finalStep);
+const nannyCancellationScene = new Scenes.WizardScene('nannyCancellationWizzard', startStep, nannyInfoStep, dateStep, numberStep, finalStep);
 module.exports = nannyCancellationScene;
