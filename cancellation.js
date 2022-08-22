@@ -48,14 +48,25 @@ numberStep.on('text', async (ctx) => {
     }
 })
 
+const cityStep = new Composer();
+cityStep.on('text', async (ctx) => {
+    try {
+        ctx.wizard.state.data.numberInfo = ctx.message.text;
+        await ctx.replyWithHTML("<b>Введите свой город</b>")
+        return ctx.wizard.next();
+    }catch(e){
+        console.log(e);
+    }
+})
+
 const finalStep = new Composer();
 finalStep.on('text', async (ctx) => {
     try {
-        ctx.wizard.state.data.numberInfo = ctx.message.text;
+        ctx.wizard.state.data.cityInfo = ctx.message.text;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`<b>Ваше обращение:\nТема: <i>${wizardData.title}</i>\nИмя и фамилия ребенка: <i>${wizardData.childInfo}</i>\nИмя и фамилия няни: <i>${wizardData.nannyInfo}</i>\nДата и время визита: <i>${wizardData.dateInfo}</i>\nВаш номер телефона: <i>${wizardData.numberInfo}</i></b>`)
+        await ctx.replyWithHTML(`<b>Ваше обращение:\nТема: <i>${wizardData.title}</i>\nИмя и фамилия ребенка: <i>${wizardData.childInfo}</i>\nИмя и фамилия няни: <i>${wizardData.nannyInfo}</i>\nДата и время визита: <i>${wizardData.dateInfo}</i>\nВаш номер телефона: <i>${wizardData.numberInfo}</i></i>\nВаш город: <i>${wizardData.cityInfo}</i></b>`)
         await ctx.replyWithHTML("<b>Спасибо! Ваша заявка была успешно отправлена и будет обработана в ближайшее время!</b>")
-        await ctx.telegram.sendMessage(process.env.CHAT_ID, `Новая заявка!\nТема: ${wizardData.title}\nИмя и фамилия ребенка: ${wizardData.childInfo}\nИмя и фамилия няни: ${wizardData.nannyInfo}\nДата и время визита: ${wizardData.dateInfo}\nНомер телефона: ${wizardData.numberInfo}\nИмя отправителя: ${wizardData.firstName} ${wizardData.lastName ? wizardData.lastName : "Фамилия не указана"}\nИмя пользователя отправителя: ${wizardData.username ? wizardData.username : "Имя пользователя скрыто"}`)
+        await ctx.telegram.sendMessage(process.env.CHAT_ID, `Новая заявка!\nТема: ${wizardData.title}\nИмя и фамилия ребенка: ${wizardData.childInfo}\nИмя и фамилия няни: ${wizardData.nannyInfo}\nДата и время визита: ${wizardData.dateInfo}\nНомер телефона: ${wizardData.numberInfo}\nГород: ${wizardData.cityInfo}\nИмя отправителя: ${wizardData.firstName} ${wizardData.lastName ? wizardData.lastName : "Фамилия не указана"}\nИмя пользователя отправителя: ${wizardData.username ? wizardData.username : "Имя пользователя скрыто"}`)
         return ctx.scene.leave();
     }catch(e){
         console.log(e);
