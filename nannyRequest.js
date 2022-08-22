@@ -62,5 +62,5 @@ finalStep.on('text', async (ctx) => {
     }
 })
 
-const nannyRequestScene = new Scenes.WizardScene('nannyRequestWizzard', startStep, dateStep, numberStep, finalStep);
+const nannyRequestScene = new Scenes.WizardScene('nannyRequestWizzard', startStep, dateStep, numberStep, cityStep, finalStep);
 module.exports = nannyRequestScene;

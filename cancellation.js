@@ -73,5 +73,5 @@ finalStep.on('text', async (ctx) => {
     }
 })
 
-const cancellationScene = new Scenes.WizardScene('cancellationWizzard', startStep, nannyInfoStep, dateStep, numberStep, finalStep);
+const cancellationScene = new Scenes.WizardScene('cancellationWizzard', startStep, nannyInfoStep, dateStep, numberStep, cityStep, finalStep);
 module.exports = cancellationScene;
