@@ -53,7 +53,7 @@ finalStep.on('text', async (ctx) => {
     try {
         ctx.wizard.state.data.cityInfo = ctx.message.text;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`<b>Ваше обращение:\nТема: <i>${wizardData.title}</i>\nИмя и фамилия ребенка: <i>${wizardData.childInfo}</i>\nДата и время визита: <i>${wizardData.dateInfo}</i>\nВаш номер телефона: <i>${wizardData.numberInfo}</i></i>\nВаш город: <i>${wizardData.cityInfo}</i></b>`)
+        await ctx.replyWithHTML(`<b>Ваше обращение:\nТема: <i>${wizardData.title}</i>\nИмя и фамилия ребенка: <i>${wizardData.childInfo}</i>\nДата и время визита: <i>${wizardData.dateInfo}</i>\nВаш номер телефона: <i>${wizardData.numberInfo}</i>\nВаш город: <i>${wizardData.cityInfo}</i></b>`)
         await ctx.replyWithHTML("<b>Спасибо! Ваша заявка была успешно отправлена и будет обработана в ближайшее время!</b>")
         await ctx.telegram.sendMessage(process.env.CHAT_ID, `Новая заявка!\nТема: ${wizardData.title}\nИмя и фамилия ребенка: ${wizardData.childInfo}\nДата и время визита: ${wizardData.dateInfo}\nНомер телефона: ${wizardData.numberInfo}\nГород: ${wizardData.cityInfo}\nИмя отправителя: ${wizardData.firstName} ${wizardData.lastName}\nИмя пользователя отправителя: ${wizardData.username ? wizardData.username : "Имя пользователя скрыто"}`) 
         return ctx.scene.leave();
