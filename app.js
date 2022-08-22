@@ -16,7 +16,7 @@ app.use(
     })
   )
 
-const stage = new Scenes.Stage([nannyCancellationScene, cancellationScene, nannyRequestScene]);
+const stage = new Scenes.Stage([nannyCancellationScene, cancellationScene]);
 bot.use(session());
 bot.use(stage.middleware())
 
@@ -31,7 +31,7 @@ bot.start(async (ctx) => {
     console.log(ctx.scene)
     try{
         const {first_name} = ctx.from;
-        await ctx.reply(`Добрый день ${first_name}, какой у вас вопрос?`, Markup.keyboard([["Няня отменила визит"], ["Отменить визит"], ["Запрос на няню"]]).oneTime().resize())
+        await ctx.reply(`Добрый день ${first_name}, какой у вас вопрос?`, Markup.keyboard([["Няня отменила визит"], ["Отменить визит"]]).oneTime().resize())
     }catch(e){
         console.log(e)
     }
